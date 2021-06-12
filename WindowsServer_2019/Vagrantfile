@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+  # Base VM OS configuration.
+  config.ssh.insert_key = false
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+  # General VirtualBox VM configuration.
+  config.vm.provider :virtualbox do |v|
+    v.memory = 4096
+    v.cpus = 2
+    v.linked_clone = true
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
+  # windows.
+  config.vm.define "windows" do |windows|
+    windows.vm.box = "StefanScherer/windows_2019"
+    windows.vm.hostname = "windows.vm"
+    windows.vm.network :private_network, ip: "192.168.2.4"
+    #windows.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
+    #windows.vm.provision "shell",
+    windows.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--cpus", 2]
+      v.customize ["modifyvm", :id, "--vram", 128]
+      v.customize ["modifyvm", :id, "--accelerate3d", "on"]
+    end
+  end
+end
