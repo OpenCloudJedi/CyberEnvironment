@@ -18,9 +18,8 @@ Vagrant.configure("2") do |config|
   end
   # target1.
   config.vm.define "target1" do |target1|
-    target1.vm.box = "peru/ubuntu-20.04-desktop-amd64"
-#    config.vm.box_version = "20210601.01"
-    target1.vm.hostname = "target1.vm"
+    target1.vm.box = "codeup/Ubuntu-20.04-GUI"
+    target1.vm.hostname = "target1.ubuntu.vm"
     target1.vm.network :private_network, ip: "192.168.2.3"
     #target1.vm.provision "shell",
     #  inline: "sudo yum update -y"
@@ -38,8 +37,8 @@ Vagrant.configure("2") do |config|
   end
   # Server2.
   config.vm.define "target2" do |target2|
-    target2.vm.box = "m1k3bu11/CentOS8.3-Workstation"
-    target2.vm.hostname = "target2.vm"
+    target2.vm.box = "centos/8"
+    target2.vm.hostname = "target2.centos.vm"
     target2.vm.network :private_network, ip: "192.168.2.4"
     #target2.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".git/"
     #target2.vm.provision "shell",
