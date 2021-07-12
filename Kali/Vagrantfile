@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+  # Base VM OS configuration.
+  config.ssh.insert_key = false
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+  # General VirtualBox VM configuration.
+  config.vm.provider :virtualbox do |v|
+    v.memory = 1024
+    v.cpus = 1
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+  end
+
+# Kali box.
+  # Kali Linux Hacker Box.
+  config.vm.define "hackerbox" do |hackerbox|
+    hackerbox.vm.hostname = "HackerBox.vm"
+    hackerbox.vm.network :private_network, ip: "192.168.2.42"
+    config.vm.box = "kalilinux/rolling"
+    config.ssh.insert_key = false
+    hackerbox.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", 4096]
+      v.customize ["modifyvm", :id, "--cpus", 2]
+      v.customize ["modifyvm", :id, "--vram", 128]
+      v.customize ["modifyvm", :id, "--accelerate3d", "on"]
+    end
+    hackerbox.vm.provider :libvirt do |libvirt|
+      libvirt.memory = 4096
+      libvirt.cpus = 2
+      libvirt.video_vram = 128
+    end
+  end
+end
